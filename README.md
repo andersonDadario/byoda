@@ -44,13 +44,16 @@ export MYSQL_POC_IP3=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.
 Testing the PoC:
 
 ```sh
+# Solve dependencies for 'byoda.rb'
+bundle install
+
 # Start Application
 # Requires access to "MYSQL_POC_IP" env variable
 ruby byoda.rb &
 
 # Create BYODA "User table" on "mysql-poc" container
 # Used to store users' DMS credentials
-curl http://localhost:8080/setup
+curl http://localhost:8080/setup --data ""
 # {
 #   "success": true
 # }

@@ -32,7 +32,11 @@ class Task < ActiveRecord::Base
     # Empty
 end
 
-  get '/setup' do
+  #
+  # POST /setup
+  # Create "users" table on BYODA's DMS
+  #
+  post '/setup' do
     begin
         # Create Users Table
         ActiveRecord::Base.establish_connection(:mysql)
@@ -51,6 +55,10 @@ end
     end
   end
 
+  #
+  # GET /users
+  # List all user records on BYODA's DMS
+  #
   get '/users' do
     begin
         ActiveRecord::Base.establish_connection(:mysql)
@@ -60,6 +68,10 @@ end
     end
   end
 
+  #
+  # GET /users/:id/tasks
+  # List all task records on User's DMS
+  #
   get %r{/users/([\d]+)/tasks} do
     begin
         # Load user
@@ -83,6 +95,10 @@ end
     end
   end
 
+  #
+  # POST /users/:id/tasks
+  # Create task record on User's DMS
+  #
   post %r{/users/([\d]+)/tasks} do
     begin
         # Load user
@@ -112,8 +128,12 @@ end
     end
   end
 
+  #
+  # POST /users
+  # Create user record on BYODA's DMS
+  #
   post '/users' do
-    # Extremely dangerous to don't validate input
+    # Extremely dangerous to don't validate input like this
     # In production. Don't do this, validate input instead :)
     begin
         ActiveRecord::Base.establish_connection(:mysql)
@@ -124,6 +144,10 @@ end
     end    
   end
 
+  #
+  # POST /users/:id/setup
+  # Create "tasks" table on User's DMS
+  #
   post %r{/users/([\d]+)/setup} do
     begin
         ActiveRecord::Base.establish_connection(:mysql)
@@ -149,11 +173,16 @@ end
     end
   end
 
+  #
+  # GET /
+  # List all routes
+  #
   get '/' do
     byoda_render({
         routes: {
-            "[GET] /setup" => {
-                description: "Create users table"
+            "[POST] /setup" => {
+                description: "Create users table",
+                parameters: {}
             },
             "[GET] /users" => {
                 description: "List all users"
